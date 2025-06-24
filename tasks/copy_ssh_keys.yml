@@ -1,0 +1,48 @@
+---
+- name: "📁 Create {{ var_home_dirs }}/.ssh user directory"
+  file:
+    state: directory
+    path: "{{ var_home_dirs }}/.ssh"
+    owner: "{{ var_username }}"
+    group: "{{ var_username }}"
+    mode: 0700
+  when:
+    - var_home_dirs is defined and var_home_dirs != ""
+    - var_username  is defined and var_home_dirs != ""
+
+- name: "🔑 Create public ssh key"
+  copy:
+    content: "{{ var_public_ssh_key }}"
+    dest: "{{ var_home_dirs }}/.ssh/id_rsa.pub"
+    owner: "{{ var_username }}"
+    group: "{{ var_username }}"
+    mode: 0600
+  when:
+    - var_home_dirs is defined and var_home_dirs != ""
+    - var_username  is defined and var_home_dirs != ""
+    - var_public_ssh_key is defined and var_public_ssh_key != ""
+
+- name: "🔑  Create private ssh key"
+  copy:
+    content: "{{ var_private_ssh_key }}"
+    dest: "{{ var_home_dirs }}/.ssh/id_rsa"
+    owner: "{{ var_username }}"
+    group: "{{ var_username }}"
+    mode: 0600
+  when:
+    - var_home_dirs is defined and var_home_dirs != ""
+    - var_username  is defined and var_home_dirs != ""
+    - var_private_ssh_key is defined and var_private_ssh_key != ""
+
+- name: "🔐 Set authorized keys for {{ var_username }}"
+  become_user: "{{ var_username }}"
+  no_log: true
+  authorized_key:
+    key: "{{ item.authorized_key }}"
+    user: "{{ var_username }}"
+    state: "{{ item.state }}"
+  when:
+    - var_authorized_keys is defined and var_authorized_keys != []
+    - item.authorized_key is defined and item.authorized_key !=""
+    - item.state is defined
+  loop: "{{ var_authorized_keys }}"

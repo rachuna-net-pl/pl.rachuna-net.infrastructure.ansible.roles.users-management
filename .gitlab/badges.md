@@ -1,0 +1,2 @@
+[![](https://gitlab.com/pl.rachuna-net/infrastructure/ansible/roles/users-management/-/badges/release.svg)](https://gitlab.com/pl.rachuna-net/infrastructure/ansible/roles/users-management/-/releases)
+[![](https://gitlab.com/pl.rachuna-net/infrastructure/ansible/roles/users-management/badges/main/pipeline.svg)](https://gitlab.com/pl.rachuna-net/infrastructure/ansible/roles/users-management/-/commits/main)

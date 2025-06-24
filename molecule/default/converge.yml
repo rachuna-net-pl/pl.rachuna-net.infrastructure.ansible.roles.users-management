@@ -1,0 +1,61 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: users-management
+      vars:
+        input_debug: true
+        input_role_technical_accounts:
+          - username: molecule-technical-test
+            comment: Molecule Technical Test User
+            shell: /bin/bash
+            public_ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCoVZQNKpgHU66VoiUe851/ZV0cPeNFBElAIcZS83QvxfRtnxczNG02/qpbi5cvfMlyd0GBjXySJtS41+0W1X0KuFhh49g1H/rludMOI65jhGtHBNCYJ9Sya9IIP8xiArHuayEjNZKNjvsWebIpRx0x7HI43l8gXzhf1AjHjEO5IQ== maciej-rachuna@nbo-001-mr"
+            private_ssh_key: >-
+              -----BEGIN OPENSSH PRIVATE KEY-----
+              b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAlwAAAAdzc2gtcn
+              NhAAAAAwEAAQAAAIEAqFWUDSqYB1OulaIlHvOdf2VdHD3jRQRJQCHGUvN0L8X0bZ8XMzRt
+              Nv6qW4uXL3zJcndBgY18kibUuNftFtV9CrhYYePYNR/65bnTDiOuY4RrRwTQmCfUsmvSCD
+              /MYgKx7mshIzWSjY77FnmyKUcdMexyON5fIF84X9QIx4xDuSEAAAIQF101URddNVEAAAAH
+              c3NoLXJzYQAAAIEAqFWUDSqYB1OulaIlHvOdf2VdHD3jRQRJQCHGUvN0L8X0bZ8XMzRtNv
+              6qW4uXL3zJcndBgY18kibUuNftFtV9CrhYYePYNR/65bnTDiOuY4RrRwTQmCfUsmvSCD/M
+              YgKx7mshIzWSjY77FnmyKUcdMexyON5fIF84X9QIx4xDuSEAAAADAQABAAAAgEHvM0xs8J
+              t+FZYaqruS5I/v3iafvxNbeG2cTRhUr5++w9zkQawWzuiJm6S76n35PNaPC6N5DeAZQZ0d
+              Rop5GL6laGEFImaveg/KHx3MN+lzr/OPLTPV2xf3MqOm7hCP402LtZKafiUL2J5Zloa/rq
+              QopKl/FJYAAh5PzpjIEpQhAAAAQCkeCgZX7h7MX+2au1VpTU9xpqw8vxjyCPHrN1WQ4RRB
+              QteNcXMyo1H679noOmWLirIAX/HwZgBtCoTi/P74ouYAAABBANksEIzwqPlUXnX6TtSse9
+              GX1agD4wwan/Iyfk7i5P9lPBc1qFFGm+gpjZo9J+uZonGEHGW4CSurZ1ksBwMJzc0AAABB
+              AMZuNpjzHhzzFhzTBhTt3PjM8reu+ock0nJ/I5C3yhALzLm68xo4wtHdOIKzsMaWVKsM4r
+              tUXbPg6vpDze7GZKUAAAAZbWFjaWVqLXJhY2h1bmFAbmJvLTAwMS1tcgEC
+              -----END OPENSSH PRIVATE KEY-----
+            authorized_keys:
+              - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCoVZQNKpgHU66VoiUe851/ZV0cPeNFBElAIcZS83QvxfRtnxczNG02/qpbi5cvfMlyd0GBjXySJtS41+0W1X0KuFhh49g1H/rludMOI65jhGtHBNCYJ9Sya9IIP8xiArHuayEjNZKNjvsWebIpRx0x7HI43l8gXzhf1AjHjEO5IQ== maciej-rachuna@nbo-001-mr"
+        input_role_user_accounts:
+          - username: molecule-test
+            comment: Molecule Test User
+            shell: /bin/bash
+            home_path: /home/molecule-test
+            public_ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCoVZQNKpgHU66VoiUe851/ZV0cPeNFBElAIcZS83QvxfRtnxczNG02/qpbi5cvfMlyd0GBjXySJtS41+0W1X0KuFhh49g1H/rludMOI65jhGtHBNCYJ9Sya9IIP8xiArHuayEjNZKNjvsWebIpRx0x7HI43l8gXzhf1AjHjEO5IQ== maciej-rachuna@nbo-001-mr"
+            private_ssh_key: >-
+              -----BEGIN OPENSSH PRIVATE KEY-----
+              b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAlwAAAAdzc2gtcn
+              NhAAAAAwEAAQAAAIEAqFWUDSqYB1OulaIlHvOdf2VdHD3jRQRJQCHGUvN0L8X0bZ8XMzRt
+              Nv6qW4uXL3zJcndBgY18kibUuNftFtV9CrhYYePYNR/65bnTDiOuY4RrRwTQmCfUsmvSCD
+              /MYgKx7mshIzWSjY77FnmyKUcdMexyON5fIF84X9QIx4xDuSEAAAIQF101URddNVEAAAAH
+              c3NoLXJzYQAAAIEAqFWUDSqYB1OulaIlHvOdf2VdHD3jRQRJQCHGUvN0L8X0bZ8XMzRtNv
+              6qW4uXL3zJcndBgY18kibUuNftFtV9CrhYYePYNR/65bnTDiOuY4RrRwTQmCfUsmvSCD/M
+              YgKx7mshIzWSjY77FnmyKUcdMexyON5fIF84X9QIx4xDuSEAAAADAQABAAAAgEHvM0xs8J
+              t+FZYaqruS5I/v3iafvxNbeG2cTRhUr5++w9zkQawWzuiJm6S76n35PNaPC6N5DeAZQZ0d
+              Rop5GL6laGEFImaveg/KHx3MN+lzr/OPLTPV2xf3MqOm7hCP402LtZKafiUL2J5Zloa/rq
+              QopKl/FJYAAh5PzpjIEpQhAAAAQCkeCgZX7h7MX+2au1VpTU9xpqw8vxjyCPHrN1WQ4RRB
+              QteNcXMyo1H679noOmWLirIAX/HwZgBtCoTi/P74ouYAAABBANksEIzwqPlUXnX6TtSse9
+              GX1agD4wwan/Iyfk7i5P9lPBc1qFFGm+gpjZo9J+uZonGEHGW4CSurZ1ksBwMJzc0AAABB
+              AMZuNpjzHhzzFhzTBhTt3PjM8reu+ock0nJ/I5C3yhALzLm68xo4wtHdOIKzsMaWVKsM4r
+              tUXbPg6vpDze7GZKUAAAAZbWFjaWVqLXJhY2h1bmFAbmJvLTAwMS1tcgEC
+              -----END OPENSSH PRIVATE KEY-----
+            authorized_keys:
+              - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCoVZQNKpgHU66VoiUe851/ZV0cPeNFBElAIcZS83QvxfRtnxczNG02/qpbi5cvfMlyd0GBjXySJtS41+0W1X0KuFhh49g1H/rludMOI65jhGtHBNCYJ9Sya9IIP8xiArHuayEjNZKNjvsWebIpRx0x7HI43l8gXzhf1AjHjEO5IQ== maciej-rachuna@nbo-001-mr"
+        input_role_users_on_host:
+          - username: molecule-test

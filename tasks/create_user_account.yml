@@ -1,0 +1,27 @@
+---
+- name: "👥 Create user group: {{ var_user_account.username }}"
+  group:
+    name: "{{ var_user_account.username }}"
+    state: present
+    gid: "{{ var_user_account.gid }}"
+  when:
+    - var_user_account.gid is defined
+
+- name: "👤 Create user account: {{ var_user_account.username }}"
+  user:
+    name: "{{ var_user_account.username }}"
+    comment: "{{ var_user_account.comment }}"
+    shell: "{{ var_user_account.shell | default(var_defeault_shell) }}"
+    group: "{{ var_user_account.gid | default(omit) }}"
+    groups: "{{ var_user_on_host.system_groups | default(omit) }}"
+    uid: "{{ var_user_account.uid | default(omit) }}"
+    home: "{{ var_user_account.home_path | default('/home/' + var_user_account.username ) }}"
+
+- name: "🔐 Copy ssh keys"
+  include_tasks: copy_ssh_keys.yml
+  vars:
+    var_home_dirs: "{{ var_user_account.home_path        | default('/home/' + var_user_account.username ) }}"
+    var_username: "{{ var_user_account.username }}"
+    var_public_ssh_key: "{{ var_user_account.public_ssh_key   | default(None)  }}"
+    var_private_ssh_key: "{{ var_user_account.private_ssh_key  | default(None)  }}"
+    var_authorized_keys: "{{ var_user_account.authorized_keys  | default('[]')  }}"
