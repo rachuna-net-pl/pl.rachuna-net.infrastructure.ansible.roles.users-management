@@ -1,0 +1,8 @@
+---
+- name: "👥 Create users accounts"
+  include_tasks: create_account.yml
+  # no_log: true
+  loop: "{{ input_role_accounts_on_host }}"
+  loop_control:
+    loop_var: var_account_on_host
+  when: var_account_on_host.username == var_account.username
