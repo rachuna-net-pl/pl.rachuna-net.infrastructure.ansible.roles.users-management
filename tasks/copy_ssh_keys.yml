@@ -35,14 +35,13 @@
     - var_private_ssh_key is defined and var_private_ssh_key != ""
 
 - name: "🔐 Set authorized keys for {{ var_username }}"
-  become_user: "{{ var_username }}"
-  no_log: true
+  become: true
   authorized_key:
     key: "{{ item.authorized_key }}"
     user: "{{ var_username }}"
     state: "{{ item.state }}"
   when:
     - var_authorized_keys is defined and var_authorized_keys != []
-    - item.authorized_key is defined and item.authorized_key !=""
+    - item.authorized_key is defined and item.authorized_key != ""
     - item.state is defined
   loop: "{{ var_authorized_keys }}"
