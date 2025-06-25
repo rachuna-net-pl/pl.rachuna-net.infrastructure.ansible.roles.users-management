@@ -1,15 +1,15 @@
 ---
 - name: "👥 Create users accounts"
-  include_tasks: create_user_accounts.yml
-  no_log: true
+  include_tasks: create_accounts.yml
+  # no_log: true
   loop: "{{ input_role_user_accounts }}"
   loop_control:
-    loop_var: var_user_account
+    loop_var: var_account
   when: input_role_user_accounts is defined
 
 - name: "Create technical accounts"
-  include_tasks: create_technical_account.yml
+  include_tasks: create_accounts.yml
   loop: "{{ input_role_technical_accounts }}"
   loop_control:
-    loop_var: var_technical_account
+    loop_var: var_account
   when: input_role_technical_accounts is defined

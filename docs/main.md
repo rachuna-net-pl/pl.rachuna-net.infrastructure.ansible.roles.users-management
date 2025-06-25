@@ -30,6 +30,27 @@ Rola wykonuje następujące operacje:
     - Ustawianie odpowiednich uprawnień dla plików
 
 ---
+## ✨ Model działania
+
+Rola działa **w dwóch krokach**, które muszą być użyte razem:
+
+1. **Globalna definicja użytkownika**
+   W zmiennych grupowych (np. `group_vars/all.yml`) definiujesz dane kont:
+
+   * `input_role_user_accounts` – zwykli użytkownicy,
+   * `input_role_technical_accounts` – konta techniczne.
+
+2. **Lokalna aktywacja użytkownika na hoście**
+   W `group_vars/<grupa>.yml` lub `host_vars/<host>.yml` poprzez dodanie zmiennej `input_role_accounts_on_host`, która:
+
+   * Wskazuje, którzy użytkownicy mają być założeni na danym hoście,
+   * Opcjonalnie przypisuje ich do grup systemowych (`system_groups`).
+
+> [!warning]
+> ⚠️ Jeśli użytkownik nie został aktywowany przez >`input_role_accounts_on_host`, **nie zostanie założony**, nawet jeśli został zdefiniowany globalnie.
+
+
+---
 ## Zmienne
 
 ### Zmienne konfiguracyjne (defaults/main.yml)
@@ -50,7 +71,6 @@ shell: /bin/bash  # opcjonalne, domyślnie /bin/bash
 uid: 1000  # opcjonalne
 gid: 1000  # opcjonalne
 home_path: /home/użytkownik  # opcjonalne
-system_groups: ['sudo', 'docker']  # opcjonalne
 public_ssh_key: "klucz-publiczny"  # opcjonalne
 private_ssh_key: "klucz-prywatny"  # opcjonalne
 authorized_keys:  # opcjonalne
@@ -63,52 +83,58 @@ authorized_keys:  # opcjonalne
 ---
 ## Użycie
 
-### Podstawowa konfiguracja użytkownika
+### `group_vars/all.yml`
+
+```yaml
+user_accounts:
+  - username: user1
+    comment: "Pierwszy użytkownik"
+    shell: /bin/bash
+
+  - username: user2
+    comment: "Drugi użytkownik"
+    shell: /bin/bash
+
+technical_accounts:
+  - username: jenkins
+    comment: "Konto CI"
+    public_ssh_key: "ssh-rsa AAAAB3..."
+```
+
+---
+### `group_vars/web-servers.yml` (lub `host_vars/web1.yml`)
+
+```yaml
+accounts_on_host:
+  - username: user1
+    system_groups:
+      - sudo
+
+  - username: jenkins
+    system_groups:
+      - docker
+```
+
+---
+## 🔧 Playbook
 
 ```yaml
 - hosts: all
+  become: true
   roles:
     - role: users_management
       vars:
-        input_role_user_accounts:
-          - username: jan_kowalski
-            comment: "Jan Kowalski"
-            system_groups: ['sudo']
+        input_role_user_accounts: "{{ user_accounts }}"
+        input_role_technical_accounts: "{{ technical_accounts }}"
+        input_role_accounts_on_host: "{{ accounts_on_host }}"
 ```
 
-### Konfiguracja konta technicznego z kluczami SSH
+---
+## 🧠 Dobre praktyki
 
-```yaml
-- hosts: all
-  roles:
-    - role: users_management
-      vars:
-        input_role_technical_accounts:
-          - username: jenkins
-            comment: "Jenkins CI Account"
-            shell: /bin/bash
-            public_ssh_key: "ssh-rsa AAAAB3..."
-            authorized_keys:
-              - authorized_key: "ssh-rsa AAAAB3..."
-                state: present
-```
-
-### Konfiguracja wielu użytkowników
-
-```yaml
-- hosts: all
-  roles:
-    - role: users_management
-      vars:
-        input_role_user_accounts:
-          - username: user1
-            comment: "Pierwszy użytkownik"
-          - username: user2
-            comment: "Drugi użytkownik"
-        input_role_technical_accounts:
-          - username: backup
-            comment: "Konto do backupu"
-```
+* Umieszczaj `input_role_user_accounts` i `input_role_technical_accounts` w `group_vars/all.yml`, aby centralnie definiować konta.
+* W `group_vars/<group>.yml` lub `host_vars/<host>.yml` dodawaj tylko `input_role_accounts_on_host`, aby sterować obecnością użytkowników i ich przynależnością do grup systemowych.
+* Dzięki temu Twoja infrastruktura będzie **czysta**, **czytelna** i **łatwa do utrzymania**.
 
 ---
 ## Bezpieczeństwo

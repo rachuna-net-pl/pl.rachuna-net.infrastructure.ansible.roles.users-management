@@ -57,5 +57,7 @@
               -----END OPENSSH PRIVATE KEY-----
             authorized_keys:
               - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCoVZQNKpgHU66VoiUe851/ZV0cPeNFBElAIcZS83QvxfRtnxczNG02/qpbi5cvfMlyd0GBjXySJtS41+0W1X0KuFhh49g1H/rludMOI65jhGtHBNCYJ9Sya9IIP8xiArHuayEjNZKNjvsWebIpRx0x7HI43l8gXzhf1AjHjEO5IQ== maciej-rachuna@nbo-001-mr"
-        input_role_users_on_host:
+        input_role_accounts_on_host:
           - username: molecule-test
+            system_groups:
+              - adm
