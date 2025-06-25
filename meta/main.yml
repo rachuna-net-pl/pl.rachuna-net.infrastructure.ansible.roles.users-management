@@ -2,10 +2,15 @@
 galaxy_info:
   role_name: users_management
   namespace: pl_rachuna_net
-  author: Maciej Rachuna
-  description: User Management
-  license: MIT
+  author: "Maciej Rachuna"
+  description: "Ansible Role do zarządzania kontami użytkowników na serwerach Linux. Obsługuje tworzenie kont zwykłych i technicznych, konfigurację kluczy SSH oraz zarządzanie grupami użytkowników."
+  company: "rachuna.net"
+  license: "MIT"
   min_ansible_version: "2.9"
+
+  # Dodatkowe metadane
+  issue_tracker_url: "https://github.com/pl-rachuna-net/ansible-roles/issues"
+  github_branch: "main"
 
   platforms:
     - name: Debian
@@ -22,10 +27,23 @@ galaxy_info:
         - "7"
         - "8"
         - "9"
+    - name: Fedora
+      versions:
+        - "37"
+        - "38"
+        - "39"
+        - "40"
 
   galaxy_tags:
-    - "system"
-    - "users"
-    - "technical_users"
+    - system
+    - users
+    - accounts
+    - ssh
+    - security
+    - user-management
+    - technical-users
+    - groups
+    - linux
+    - server
 
 dependencies: []
